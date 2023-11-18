@@ -9,4 +9,4 @@
 > `make local-serve`
 
 #### Run containerized application
-> `make local-deps-install`
+> `make docker-start`
