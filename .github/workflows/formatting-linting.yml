@@ -1,0 +1,46 @@
+name: Formatting and Linting the application
+
+on: [pull_request]
+
+env:
+  BACKEND_IMAGE_TAG: nestjs-api
+  FRONTEND_IMAGE_TAG: svelte-ui
+
+jobs:
+  format-lint-back:
+    name: Run formatting & linting Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Build the Docker image
+        run: docker build -t $BACKEND_IMAGE_TAG --target=create-build .
+
+      - name: Run Prettier
+        run: docker run $BACKEND_IMAGE_TAG sh -c 'npm run format:verify'
+
+      - name: Run ESLint
+        run: docker run $BACKEND_IMAGE_TAG sh -c 'npm run lint'
+
+  format-lint-front:
+    name: Run formatting & linting Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Build the Docker image
+        run: docker build -t $FRONTEND_IMAGE_TAG --target=create-build .
+
+      - name: Run Prettier
+        run: docker run $FRONTEND_IMAGE_TAG sh -c 'npm run format:verify'
+
+      - name: Run ESLint
+        run: docker run $FRONTEND_IMAGE_TAG sh -c 'npm run lint'

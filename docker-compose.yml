@@ -1,0 +1,53 @@
+version: "3.8"
+
+volumes:
+  postgres-volume:
+
+services:
+  back:
+    container_name: CirisBackend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: run
+    environment:
+      - DATABASE_URL=postgresql://ciris-dev-user:ciris-dev-password@postgres/ciris-dev-db?schema=public
+      - CLIENT_URL=http://front:3000
+      - APP_PORT=8000
+    depends_on:
+      - postgres
+    networks:
+      - network-backend
+      - network-frontend
+
+  front:
+    container_name: CirisFrontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: run
+    environment:
+      - API_URL=http://back:8000/api/v1
+      - APP_PORT=3000
+    depends_on:
+      - back
+    ports:
+      - 3000:3000
+    networks:
+      - network-frontend
+
+  postgres:
+    container_name: CirisPostgreSQL
+    image: timescale/timescaledb:2.5.2-pg14-oss
+    environment:
+      POSTGRES_USER: ciris-dev-user
+      POSTGRES_PASSWORD: ciris-dev-password
+      POSTGRES_DB: ciris-dev-db
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data/
+    networks:
+      - network-backend
+
+networks:
+  network-backend:
+  network-frontend:
