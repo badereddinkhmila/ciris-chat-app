@@ -1,7 +1,7 @@
 #*============================================================================*#
 #*=====*                          Start App	                            *=====*#
 #*============================================================================*#
-.PHONY: docker-start
+.PHONY: docker-start local-deps-install local-serve
 
 docker-start:
 		@docker compose up
