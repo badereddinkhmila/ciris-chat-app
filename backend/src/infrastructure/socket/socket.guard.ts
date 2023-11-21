@@ -29,6 +29,7 @@ export class SocketGuard implements CanActivate {
       this._jwtService,
       this._configService,
     );
+    if (!payload) return false;
     return true;
   }
 

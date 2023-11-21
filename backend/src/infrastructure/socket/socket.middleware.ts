@@ -15,6 +15,7 @@ export const SocketAuthMiddleware = (): SocketIOMiddleware => {
         new JwtService(),
         new ConfigService(),
       );
+      if (!payload) throw new Error('Invalid token');
       next();
     } catch (e) {
       next(e);
