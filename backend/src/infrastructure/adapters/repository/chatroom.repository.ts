@@ -11,16 +11,18 @@ export default class ChatroomRepositoryPostgres implements ChatroomRepository {
     const chatroom = await this._prismaService.chatroom.create({
       data: {
         users: {
-          connect: [{ id: _chatroom.users[0] }, { id: _chatroom.users[0] }],
+          connect: [_chatroom.users[0], _chatroom.users[1]],
         },
       },
       include: {
-        users: true,
+        users: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
-    return Optional.of(
-      new Chatroom(chatroom.id, [chatroom.users[0].id, chatroom.users[1].id]),
-    );
+    return Optional.of(new Chatroom(chatroom.id, chatroom.users));
   }
 
   async getByID(id: string): Promise<Chatroom> {
@@ -29,12 +31,13 @@ export default class ChatroomRepositoryPostgres implements ChatroomRepository {
         id: id,
       },
       include: {
-        users: true,
+        users: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
-    return new Chatroom(chatroom.id, [
-      chatroom.users[0].id,
-      chatroom.users[1].id,
-    ]);
+    return new Chatroom(chatroom.id, chatroom.users);
   }
 }

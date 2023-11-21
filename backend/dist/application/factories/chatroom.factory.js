@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const chatroom_model_1 = require("../../domain/chatroom.model");
 let ChatroomFactory = class ChatroomFactory {
-    createUser(_chatroomCommand) {
+    createChatroom(_chatroomCommand) {
         return new chatroom_model_1.default('', _chatroomCommand.users);
     }
 };

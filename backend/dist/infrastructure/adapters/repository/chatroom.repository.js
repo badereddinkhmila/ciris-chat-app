@@ -21,14 +21,18 @@ let ChatroomRepositoryPostgres = class ChatroomRepositoryPostgres {
         const chatroom = await this._prismaService.chatroom.create({
             data: {
                 users: {
-                    connect: [{ id: _chatroom.users[0] }, { id: _chatroom.users[0] }],
+                    connect: [_chatroom.users[0], _chatroom.users[1]],
                 },
             },
             include: {
-                users: true,
+                users: {
+                    select: {
+                        id: true,
+                    },
+                },
             },
         });
-        return typescript_optional_1.Optional.of(new chatroom_model_1.default(chatroom.id, [chatroom.users[0].id, chatroom.users[1].id]));
+        return typescript_optional_1.Optional.of(new chatroom_model_1.default(chatroom.id, chatroom.users));
     }
     async getByID(id) {
         const chatroom = await this._prismaService.chatroom.findUnique({
@@ -36,13 +40,14 @@ let ChatroomRepositoryPostgres = class ChatroomRepositoryPostgres {
                 id: id,
             },
             include: {
-                users: true,
+                users: {
+                    select: {
+                        id: true,
+                    },
+                },
             },
         });
-        return new chatroom_model_1.default(chatroom.id, [
-            chatroom.users[0].id,
-            chatroom.users[1].id,
-        ]);
+        return new chatroom_model_1.default(chatroom.id, chatroom.users);
     }
 };
 ChatroomRepositoryPostgres = __decorate([

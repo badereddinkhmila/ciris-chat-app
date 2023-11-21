@@ -1,3 +1,5 @@
 export default class ChatroomCommand {
-    users: string[];
+    users: {
+        id: string;
+    }[];
 }

@@ -17,7 +17,14 @@ let UserRepositoryPostgres = class UserRepositoryPostgres {
         this._prismaService = _prismaService;
     }
     async getAllUsers() {
-        return this._prismaService.user.findMany();
+        return this._prismaService.user.findMany({
+            select: {
+                id: true,
+                firstname: true,
+                lastname: true,
+                email: true,
+            },
+        });
     }
     async getByEmail(email) {
         return typescript_optional_1.Optional.ofNullable(await this._prismaService.user.findUnique({

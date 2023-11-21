@@ -4,7 +4,7 @@ import ChatroomCommand from '../commands/chatroom.command';
 
 @Injectable()
 export default class ChatroomFactory {
-  public createUser(_chatroomCommand: ChatroomCommand): Chatroom {
+  public createChatroom(_chatroomCommand: ChatroomCommand): Chatroom {
     return new Chatroom('', _chatroomCommand.users);
   }
 }

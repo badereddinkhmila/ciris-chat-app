@@ -9,8 +9,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const message_model_1 = require("../../domain/message.model");
 let MessageFactory = class MessageFactory {
-    createUser(_messageCommand) {
-        return new message_model_1.default(_messageCommand.message, _messageCommand.chatroomId, _messageCommand.createBy);
+    createMessage(_messageCommand) {
+        return new message_model_1.default(_messageCommand.message, _messageCommand.chatroomId, _messageCommand.createdBy);
     }
 };
 MessageFactory = __decorate([

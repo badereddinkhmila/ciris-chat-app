@@ -6,18 +6,28 @@ import ChatroomFactory from './factories/chatroom.factory';
 import MessageFactory from './factories/message.factory';
 import UserFactory from './factories/user.factory';
 import ChatroomUsecase from './chatroom.usecase';
-import MessageUsecase from './message.usecase';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../infrastructure/prisma.service';
 import { ConfigService } from '@nestjs/config';
+import ChatroomRepositoryPostgres from '../infrastructure/adapters/repository/chatroom.repository';
+import MessageRepositoryPostgres from '../infrastructure/adapters/repository/message.repository';
+import UsersUsecase from './users.usecase';
 @Module({
   providers: [
     AuthUsecase,
+    UsersUsecase,
     ChatroomUsecase,
-    MessageUsecase,
     {
       provide: 'UserRepository',
       useClass: UserRepositoryPostgres,
+    },
+    {
+      provide: 'ChatroomRepository',
+      useClass: ChatroomRepositoryPostgres,
+    },
+    {
+      provide: 'MessageRepository',
+      useClass: MessageRepositoryPostgres,
     },
     UserFactory,
     ChatroomFactory,
@@ -26,14 +36,7 @@ import { ConfigService } from '@nestjs/config';
     PrismaService,
     JwtService,
   ],
-  imports: [DomainModule, JwtModule.register({})],
-  exports: [
-    UserFactory,
-    ChatroomFactory,
-    MessageFactory,
-    AuthUsecase,
-    ChatroomUsecase,
-    MessageUsecase,
-  ],
+  imports: [DomainModule],
+  exports: [AuthUsecase, ChatroomUsecase, UsersUsecase],
 })
 export class ApplicationModule {}

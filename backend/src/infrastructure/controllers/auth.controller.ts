@@ -3,7 +3,7 @@ import { Request } from 'express';
 import AuthUsecase from '../../application/auth.usecase';
 import UserCommand from '../../application/commands/user.command';
 import LoginCommand from '../../application/commands/login.command';
-import { AccessTokenGuard } from '../auth/guards/accessToken.guard';
+import { RefreshTokenGuard } from '../auth/guards/refreshToken.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -19,10 +19,9 @@ export class AuthController {
     return this._authUsecase.handleLogin(_loginCommand);
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(RefreshTokenGuard)
   @Get('refresh')
   refreshTokens(@Req() _req: Request) {
-    console.log(_req.user);
     return this._authUsecase.handleRefreshTokens(
       _req.user['sub'],
       _req.user['username'],

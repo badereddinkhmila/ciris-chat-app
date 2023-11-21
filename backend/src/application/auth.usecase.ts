@@ -47,6 +47,12 @@ export default class AuthUsecase {
     return await this.getTokens(userId, email);
   }
 
+  public async handleGetAllUsers() {
+    return await this._userRepository.getAllUsers();
+  }
+  /*****************************************************************************/
+  /***********************  Authentication Utils  ******************************/
+  /*****************************************************************************/
   async getTokens(userId: string, email: string) {
     const [accessToken, refreshToken] = await Promise.all([
       this._jwtService.signAsync(
@@ -56,7 +62,7 @@ export default class AuthUsecase {
         },
         {
           secret: this._configService.get<string>('JWT_ACCESS_SECRET'),
-          expiresIn: '15m',
+          expiresIn: '3h',
         },
       ),
       this._jwtService.signAsync(

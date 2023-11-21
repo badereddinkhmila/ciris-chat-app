@@ -16,6 +16,7 @@ export default class AuthUsecase {
         accessToken: string;
         refreshToken: string;
     }>;
+    handleGetAllUsers(): Promise<import("../domain/user.model").default[]>;
     getTokens(userId: string, email: string): Promise<{
         accessToken: string;
         refreshToken: string;

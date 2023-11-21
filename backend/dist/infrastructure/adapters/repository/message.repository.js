@@ -17,14 +17,22 @@ let MessageRepositoryPostgres = class MessageRepositoryPostgres {
         this._prismaService = _prismaService;
     }
     async getMessagesByChatroom(chatroomId, lastFetchedDate) {
-        return this._prismaService.message.findMany({
+        return typescript_optional_1.Optional.of(await this._prismaService.message.findMany({
             where: {
                 chatroomId: chatroomId,
                 createdAt: {
                     lt: lastFetchedDate,
                 },
             },
-        });
+            take: 30,
+        }));
+    }
+    async getMessagesByID(id) {
+        return typescript_optional_1.Optional.of(await this._prismaService.message.findUnique({
+            where: {
+                id: id,
+            },
+        }));
     }
     async createMessage(message) {
         return typescript_optional_1.Optional.of(await this._prismaService.message.create({
@@ -35,7 +43,6 @@ let MessageRepositoryPostgres = class MessageRepositoryPostgres {
                         id: message.chatroomId,
                     },
                 },
-                deletedAt: null,
                 createdBy: message.createdBy,
             },
             include: {
@@ -43,7 +50,7 @@ let MessageRepositoryPostgres = class MessageRepositoryPostgres {
             },
         }));
     }
-    async deleteMessage(messageId) {
+    async softDeleteMessage(messageId) {
         const message = await this._prismaService.message.update({
             where: {
                 id: messageId,

@@ -13,21 +13,58 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
-const user_factory_1 = require("./factories/user.factory");
+const chatroom_factory_1 = require("./factories/chatroom.factory");
+const message_factory_1 = require("./factories/message.factory");
 let ChatroomUsecase = class ChatroomUsecase {
-    constructor(_userRepository, _userFactory) {
-        this._userRepository = _userRepository;
-        this._userFactory = _userFactory;
+    constructor(_chatroomRepository, _messageRepository, _chatroomFactory, _messageFactory) {
+        this._chatroomRepository = _chatroomRepository;
+        this._messageRepository = _messageRepository;
+        this._chatroomFactory = _chatroomFactory;
+        this._messageFactory = _messageFactory;
     }
-    handler(_userCommand) {
-        const user = this._userFactory.createUser(_userCommand);
-        return this._userRepository.createUser(user);
+    handleCreate(_chatroomCommand, _connectedUserID) {
+        if (Array.from(new Set(_chatroomCommand.users.map((item) => item.id)))
+            .length != 2 ||
+            !_chatroomCommand.users.some((user) => user.id === _connectedUserID))
+            throw new common_1.BadRequestException('Chatroom requires two different users!');
+        const chatroom = this._chatroomFactory.createChatroom(_chatroomCommand);
+        try {
+            return this._chatroomRepository.createChatroom(chatroom);
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('Error inserting...');
+        }
+    }
+    handleGetMessages(_messageFilter) {
+        return this._messageRepository.getMessagesByChatroom(_messageFilter.chatroomId, _messageFilter.lastDateFetched);
+    }
+    handleCreateMessage(_messageCommand) {
+        const message = this._messageFactory.createMessage(_messageCommand);
+        try {
+            return this._messageRepository.createMessage(message);
+        }
+        catch (error) {
+            throw new Error('Error inserting...');
+        }
+    }
+    async handleDeleteMessage(_messageID, _userID) {
+        const message = await this._messageRepository.getMessagesByID(_messageID);
+        if (message.isPresent() && message.get().createdBy != _userID)
+            throw new common_1.UnauthorizedException("You're not allowed to alter this resource");
+        try {
+            return this._messageRepository.softDeleteMessage(_messageID);
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('Error deleting...');
+        }
     }
 };
 ChatroomUsecase = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)('UserRepository')),
-    __metadata("design:paramtypes", [Object, user_factory_1.default])
+    __param(0, (0, common_1.Inject)('ChatroomRepository')),
+    __param(1, (0, common_1.Inject)('MessageRepository')),
+    __metadata("design:paramtypes", [Object, Object, chatroom_factory_1.default,
+        message_factory_1.default])
 ], ChatroomUsecase);
 exports.default = ChatroomUsecase;
 //# sourceMappingURL=chatroom.usecase.js.map

@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const auth_usecase_1 = require("../../application/auth.usecase");
 const user_command_1 = require("../../application/commands/user.command");
 const login_command_1 = require("../../application/commands/login.command");
-const accessToken_guard_1 = require("../auth/guards/accessToken.guard");
+const refreshToken_guard_1 = require("../auth/guards/refreshToken.guard");
 let AuthController = class AuthController {
     constructor(_authUsecase) {
         this._authUsecase = _authUsecase;
@@ -29,7 +29,6 @@ let AuthController = class AuthController {
         return this._authUsecase.handleLogin(_loginCommand);
     }
     refreshTokens(_req) {
-        console.log(_req.user);
         return this._authUsecase.handleRefreshTokens(_req.user['sub'], _req.user['username']);
     }
 };
@@ -49,7 +48,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "signin", null);
 __decorate([
-    (0, common_1.UseGuards)(accessToken_guard_1.AccessTokenGuard),
+    (0, common_1.UseGuards)(refreshToken_guard_1.RefreshTokenGuard),
     (0, common_1.Get)('refresh'),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),

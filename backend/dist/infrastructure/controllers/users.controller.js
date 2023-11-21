@@ -9,21 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MessageController = void 0;
+exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
-let MessageController = class MessageController {
-    findAll() {
-        return 'Doing nothing for now';
+const accessToken_guard_1 = require("../auth/guards/accessToken.guard");
+const users_usecase_1 = require("../../application/users.usecase");
+let UsersController = class UsersController {
+    constructor(_usersUsecase) {
+        this._usersUsecase = _usersUsecase;
+    }
+    async getAllUsers() {
+        return this._usersUsecase.handleGetAllUsers();
     }
 };
-exports.MessageController = MessageController;
+exports.UsersController = UsersController;
 __decorate([
+    (0, common_1.UseGuards)(accessToken_guard_1.AccessTokenGuard),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], MessageController.prototype, "findAll", null);
-exports.MessageController = MessageController = __decorate([
-    (0, common_1.Controller)('messages')
-], MessageController);
-//# sourceMappingURL=message.controller.js.map
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "getAllUsers", null);
+exports.UsersController = UsersController = __decorate([
+    (0, common_1.UseGuards)(accessToken_guard_1.AccessTokenGuard),
+    (0, common_1.Controller)('users'),
+    __metadata("design:paramtypes", [users_usecase_1.default])
+], UsersController);
+//# sourceMappingURL=users.controller.js.map

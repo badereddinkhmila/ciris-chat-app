@@ -7,7 +7,7 @@ export default class User {
 
   readonly email: string;
 
-  password: string;
+  password?: string;
 
   constructor(
     id: string,
@@ -16,6 +16,7 @@ export default class User {
     email: string,
     password: string,
   ) {
+    this.id = id;
     this.firstname = firstname;
     this.lastname = lastname;
     this.email = email;

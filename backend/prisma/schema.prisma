@@ -30,7 +30,7 @@ model Message {
   message    String
   createdBy  String
   createdAt  DateTime @default(now())
-  deletedAt  DateTime
+  deletedAt  DateTime?
   chatroom   Chatroom @relation(fields: [chatroomId], references: [id])
   chatroomId String
 }

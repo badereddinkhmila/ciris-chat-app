@@ -3,10 +3,11 @@ import Message from '../message.model';
 export interface MessageRepository {
   getMessagesByChatroom(
     chatroomId: string,
-    lastFetchedDate: Date,
-  ): Promise<Message[]>;
+    lastFetchedDate: string,
+  ): Promise<Optional<Message[]>>;
+  getMessagesByID(id: string): Promise<Optional<Message>>;
 
   createMessage(message: Message): Promise<Optional<Message>>;
 
-  deleteMessage(messageId: string): Promise<boolean>;
+  softDeleteMessage(messageId: string): Promise<boolean>;
 }

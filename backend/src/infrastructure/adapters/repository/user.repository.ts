@@ -9,7 +9,14 @@ export default class UserRepositoryPostgres implements UserRepository {
   constructor(private readonly _prismaService: PrismaService) {}
 
   async getAllUsers(): Promise<User[]> {
-    return this._prismaService.user.findMany();
+    return this._prismaService.user.findMany({
+      select: {
+        id: true,
+        firstname: true,
+        lastname: true,
+        email: true,
+      },
+    });
   }
   async getByEmail(email: string): Promise<Optional<User>> {
     return Optional.ofNullable(

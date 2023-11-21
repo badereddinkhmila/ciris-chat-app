@@ -13,21 +13,18 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
-const user_factory_1 = require("./factories/user.factory");
-let MessageUsecase = class MessageUsecase {
-    constructor(_userRepository, _userFactory) {
+let UsersUsecase = class UsersUsecase {
+    constructor(_userRepository) {
         this._userRepository = _userRepository;
-        this._userFactory = _userFactory;
     }
-    handler(_userCommand) {
-        const user = this._userFactory.createUser(_userCommand);
-        return this._userRepository.createUser(user);
+    async handleGetAllUsers() {
+        return await this._userRepository.getAllUsers();
     }
 };
-MessageUsecase = __decorate([
+UsersUsecase = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)('UserRepository')),
-    __metadata("design:paramtypes", [Object, user_factory_1.default])
-], MessageUsecase);
-exports.default = MessageUsecase;
-//# sourceMappingURL=message.usecase.js.map
+    __metadata("design:paramtypes", [Object])
+], UsersUsecase);
+exports.default = UsersUsecase;
+//# sourceMappingURL=users.usecase.js.map

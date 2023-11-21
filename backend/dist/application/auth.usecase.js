@@ -48,6 +48,9 @@ let AuthUsecase = class AuthUsecase {
     async handleRefreshTokens(userId, email) {
         return await this.getTokens(userId, email);
     }
+    async handleGetAllUsers() {
+        return await this._userRepository.getAllUsers();
+    }
     async getTokens(userId, email) {
         const [accessToken, refreshToken] = await Promise.all([
             this._jwtService.signAsync({
@@ -55,7 +58,7 @@ let AuthUsecase = class AuthUsecase {
                 username: email,
             }, {
                 secret: this._configService.get('JWT_ACCESS_SECRET'),
-                expiresIn: '15m',
+                expiresIn: '3h',
             }),
             this._jwtService.signAsync({
                 sub: userId,

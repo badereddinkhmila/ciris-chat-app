@@ -10,16 +10,29 @@ export default class MessageRepositoryPostgres implements MessageRepository {
 
   async getMessagesByChatroom(
     chatroomId: string,
-    lastFetchedDate: Date,
-  ): Promise<Message[]> {
-    return this._prismaService.message.findMany({
-      where: {
-        chatroomId: chatroomId,
-        createdAt: {
-          lt: lastFetchedDate,
+    lastFetchedDate: string,
+  ): Promise<Optional<Message[]>> {
+    return Optional.of(
+      await this._prismaService.message.findMany({
+        where: {
+          chatroomId: chatroomId,
+          createdAt: {
+            lt: lastFetchedDate,
+          },
         },
-      },
-    });
+        take: 30,
+      }),
+    );
+  }
+
+  async getMessagesByID(id: string): Promise<Optional<Message>> {
+    return Optional.of(
+      await this._prismaService.message.findUnique({
+        where: {
+          id: id,
+        },
+      }),
+    );
   }
   async createMessage(message: Message): Promise<Optional<Message>> {
     return Optional.of(
@@ -31,7 +44,6 @@ export default class MessageRepositoryPostgres implements MessageRepository {
               id: message.chatroomId,
             },
           },
-          deletedAt: null,
           createdBy: message.createdBy,
         },
         include: {
@@ -40,7 +52,7 @@ export default class MessageRepositoryPostgres implements MessageRepository {
       }),
     );
   }
-  async deleteMessage(messageId: string): Promise<boolean> {
+  async softDeleteMessage(messageId: string): Promise<boolean> {
     const message = await this._prismaService.message.update({
       where: {
         id: messageId,

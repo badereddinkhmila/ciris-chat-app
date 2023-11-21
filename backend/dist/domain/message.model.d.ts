@@ -1,9 +1,9 @@
 export default class Message {
     id?: string;
     readonly message: string;
-    readonly createdAt?: Date | null;
-    readonly deletedAt?: Date | null;
-    readonly chatroomId: string;
-    readonly createdBy: string;
+    createdAt?: Date | undefined;
+    deletedAt?: Date | undefined;
+    chatroomId: string;
+    createdBy: string;
     constructor(message: string, chatroomId: string, createdBy: string);
 }

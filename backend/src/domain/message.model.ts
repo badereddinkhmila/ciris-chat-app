@@ -3,13 +3,13 @@ export default class Message {
 
   readonly message: string;
 
-  readonly createdAt?: Date | null;
+  createdAt?: Date | undefined;
 
-  readonly deletedAt?: Date | null;
+  deletedAt?: Date | undefined;
 
-  readonly chatroomId: string;
+  chatroomId: string;
 
-  readonly createdBy: string;
+  createdBy: string;
   constructor(message: string, chatroomId: string, createdBy: string) {
     this.message = message;
     this.chatroomId = chatroomId;
