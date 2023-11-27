@@ -10,9 +10,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model ToPassBuild {
-  id      Int     @id @default(autoincrement())
-  name    String?
-  email   String  @unique
-  isAdmin Boolean @default(false)
+model User {
+  id        String             @id @default(uuid())
+  firstname String
+  lastname  String
+  email     String             @unique
+  password  String
+  chatrooms Chatroom[]
+}
+
+model Chatroom {
+  id       String             @id @default(uuid())
+  users    User[]
+  messages Message[]
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  message    String
+  createdBy  String
+  createdAt  DateTime @default(now())
+  deletedAt  DateTime?
+  chatroom   Chatroom @relation(fields: [chatroomId], references: [id])
+  chatroomId String
 }

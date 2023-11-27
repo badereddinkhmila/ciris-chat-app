@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" style="height: 100vh" class="dark">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
@@ -7,7 +7,7 @@
 		<title>CirisChat</title>
 		%sveltekit.head%
 	</head>
-	<body data-sveltekit-preload-data="hover" data-theme="skeleton">
-		<div style="display: contents">%sveltekit.body%</div>
+	<body data-sveltekit-preload-data="hover" style="height: 100%" data-theme="skeleton">
+		<div style="display: contents; overflow: hidden" class="flex justify-center items-center overflow-hidden">%sveltekit.body%</div>
 	</body>
 </html>

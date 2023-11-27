@@ -1,7 +1,10 @@
-<!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
+<script lang="ts">
+  import Icon from '@iconify/svelte';
 
-<div class="container h-full mx-auto flex justify-center items-center">
-	<div class="space-y-5">
-		<h1 class="h1">Chatroom</h1>
-	</div>
+</script>
+<div class="flex justify-center items-center w-full h-full">
+  <div class="flex-col items-center">
+    <Icon icon="healthicons:group-discussion-meeting-outline" height="300" />
+    <h5 class="font-bold font-mono">Select a friend and share news...</h5>
+  </div>
 </div>

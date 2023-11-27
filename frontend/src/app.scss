@@ -2,3 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind variants;
+
+:global(html, body) {
+	@apply m-0 overflow-hidden h-screen;
+}
+body {
+	@apply overflow-hidden;
+}
+div.card, div.app-bar {
+	@apply bg-gray-900;
+}

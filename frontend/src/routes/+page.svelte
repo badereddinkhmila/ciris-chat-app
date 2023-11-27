@@ -1,6 +1,9 @@
-<!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
+<script lang="ts">
+	const socket = import('../socket');
+	console.log(socket);
+</script>
 
-<div class="container h-full mx-auto flex justify-center items-center">
+<div class="container h-80 mx-auto flex justify-center items-center">
 	<div class="space-y-5">
 		<h1 class="h1">Let's get cracking bones!</h1>
 		<p>Start by exploring:</p>
@@ -11,5 +14,6 @@
 				<code class="code">/src/routes/+page.svelte</code> - this page, you can replace the contents
 			</li>
 		</ul>
+		<button on:click={() => console.log('clicked')}> Clicke </button>
 	</div>
 </div>
