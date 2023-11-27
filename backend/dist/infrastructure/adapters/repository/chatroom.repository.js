@@ -49,6 +49,24 @@ let ChatroomRepositoryPostgres = class ChatroomRepositoryPostgres {
         });
         return new chatroom_model_1.default(chatroom.id, chatroom.users);
     }
+    async getByUserID(_userId) {
+        return this._prismaService.chatroom.findMany({
+            where: {
+                users: {
+                    some: {
+                        id: _userId,
+                    },
+                },
+            },
+            include: {
+                users: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
+        });
+    }
 };
 ChatroomRepositoryPostgres = __decorate([
     (0, common_1.Injectable)(),

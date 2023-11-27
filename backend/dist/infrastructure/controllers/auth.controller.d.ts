@@ -10,5 +10,6 @@ export declare class AuthController {
     refreshTokens(_req: Request): Promise<{
         accessToken: string;
         refreshToken: string;
+        currentUserId: string;
     }>;
 }

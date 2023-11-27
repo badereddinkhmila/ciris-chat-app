@@ -30,6 +30,11 @@ export class ChatroomController {
     );
   }
 
+  @Get()
+  getChatrooms(@Req() _req: Request) {
+    return this._chatroomUsecase.handleGetByUserId(_req.user['sub']);
+  }
+
   @Post('/:id/messages')
   createMessage(
     @Param('id') _chatroomID: string,

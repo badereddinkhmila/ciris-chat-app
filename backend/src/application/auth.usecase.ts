@@ -1,4 +1,9 @@
-import { Injectable, Inject, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  BadRequestException,
+  Logger,
+} from '@nestjs/common';
 import UserFactory from './factories/user.factory';
 import { UserRepository } from '../domain/ports/user.repository';
 import UserCommand from './commands/user.command';
@@ -47,7 +52,7 @@ export default class AuthUsecase {
     return await this.getTokens(userId, email);
   }
 
-  public async handleGetAllUsers() {
+  public async handleGetAllUsers(currentUser: string) {
     return await this._userRepository.getAllUsers();
   }
   /*****************************************************************************/
@@ -62,7 +67,7 @@ export default class AuthUsecase {
         },
         {
           secret: this._configService.get<string>('JWT_ACCESS_SECRET'),
-          expiresIn: '3h',
+          expiresIn: '7d',
         },
       ),
       this._jwtService.signAsync(
@@ -72,7 +77,7 @@ export default class AuthUsecase {
         },
         {
           secret: this._configService.get<string>('JWT_REFRESH_SECRET'),
-          expiresIn: '7d',
+          expiresIn: '30d',
         },
       ),
     ]);
@@ -80,6 +85,7 @@ export default class AuthUsecase {
     return {
       accessToken,
       refreshToken,
+      currentUserId: userId,
     };
   }
   private async hashPassword(password: string) {

@@ -15,11 +15,13 @@ export default class AuthUsecase {
     handleRefreshTokens(userId: string, email: string): Promise<{
         accessToken: string;
         refreshToken: string;
+        currentUserId: string;
     }>;
-    handleGetAllUsers(): Promise<import("../domain/user.model").default[]>;
+    handleGetAllUsers(currentUser: string): Promise<import("../domain/user.model").default[]>;
     getTokens(userId: string, email: string): Promise<{
         accessToken: string;
         refreshToken: string;
+        currentUserId: string;
     }>;
     private hashPassword;
     private verifyPassword;

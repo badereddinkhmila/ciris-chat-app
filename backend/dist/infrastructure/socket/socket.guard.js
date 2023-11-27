@@ -29,6 +29,8 @@ let SocketGuard = SocketGuard_1 = class SocketGuard {
         }
         const client = context.switchToWs().getClient();
         const payload = SocketGuard_1.validateToken(client, this._jwtService, this._configService);
+        if (!payload)
+            return false;
         return true;
     }
     static async validateToken(client, _jwtS, _configS) {

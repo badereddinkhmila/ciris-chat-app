@@ -35,6 +35,14 @@ let ChatroomUsecase = class ChatroomUsecase {
             throw new common_1.BadRequestException('Error inserting...');
         }
     }
+    handleGetByUserId(_connectedUserID) {
+        try {
+            return this._chatroomRepository.getByUserID(_connectedUserID);
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('Error fetching...');
+        }
+    }
     handleGetMessages(_messageFilter) {
         return this._messageRepository.getMessagesByChatroom(_messageFilter.chatroomId, _messageFilter.lastDateFetched);
     }
@@ -44,7 +52,10 @@ let ChatroomUsecase = class ChatroomUsecase {
             return this._messageRepository.createMessage(message);
         }
         catch (error) {
-            throw new Error('Error inserting...');
+            throw new common_1.BadRequestException({
+                message: 'Error inserting...',
+                statusCode: 500,
+            });
         }
     }
     async handleDeleteMessage(_messageID, _userID) {
@@ -52,10 +63,14 @@ let ChatroomUsecase = class ChatroomUsecase {
         if (message.isPresent() && message.get().createdBy != _userID)
             throw new common_1.UnauthorizedException("You're not allowed to alter this resource");
         try {
-            return this._messageRepository.softDeleteMessage(_messageID);
+            await this._messageRepository.softDeleteMessage(_messageID);
+            return _messageID;
         }
         catch (error) {
-            throw new common_1.BadRequestException('Error deleting...');
+            throw new common_1.BadRequestException({
+                message: 'Error deleting...',
+                statusCode: 500,
+            });
         }
     }
 };

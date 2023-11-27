@@ -51,7 +51,7 @@ let MessageRepositoryPostgres = class MessageRepositoryPostgres {
         }));
     }
     async softDeleteMessage(messageId) {
-        const message = await this._prismaService.message.update({
+        return this._prismaService.message.update({
             where: {
                 id: messageId,
             },
@@ -59,7 +59,6 @@ let MessageRepositoryPostgres = class MessageRepositoryPostgres {
                 deletedAt: new Date(Date.now()),
             },
         });
-        return !!message?.id;
     }
 };
 MessageRepositoryPostgres = __decorate([

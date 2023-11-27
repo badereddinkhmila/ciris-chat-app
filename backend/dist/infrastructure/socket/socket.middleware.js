@@ -8,6 +8,8 @@ const SocketAuthMiddleware = () => {
     return async (client, next) => {
         try {
             const payload = await socket_guard_1.SocketGuard.validateToken(client, new jwt_1.JwtService(), new config_1.ConfigService());
+            if (!payload)
+                throw new Error('Invalid token');
             next();
         }
         catch (e) {

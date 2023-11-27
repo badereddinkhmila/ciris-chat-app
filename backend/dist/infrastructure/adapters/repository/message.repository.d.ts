@@ -8,5 +8,5 @@ export default class MessageRepositoryPostgres implements MessageRepository {
     getMessagesByChatroom(chatroomId: string, lastFetchedDate: string): Promise<Optional<Message[]>>;
     getMessagesByID(id: string): Promise<Optional<Message>>;
     createMessage(message: Message): Promise<Optional<Message>>;
-    softDeleteMessage(messageId: string): Promise<boolean>;
+    softDeleteMessage(messageId: string): Promise<Message>;
 }

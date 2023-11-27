@@ -24,6 +24,9 @@ let ChatroomController = class ChatroomController {
     createChatroom(_req, _chatroomCommand) {
         return this._chatroomUsecase.handleCreate(_chatroomCommand, _req.user['sub']);
     }
+    getChatrooms(_req) {
+        return this._chatroomUsecase.handleGetByUserId(_req.user['sub']);
+    }
     createMessage(_chatroomID, _req, _message) {
         return this._chatroomUsecase.handleCreateMessage({
             message: _message,
@@ -50,6 +53,13 @@ __decorate([
     __metadata("design:paramtypes", [Object, chatroom_command_1.default]),
     __metadata("design:returntype", void 0)
 ], ChatroomController.prototype, "createChatroom", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], ChatroomController.prototype, "getChatrooms", null);
 __decorate([
     (0, common_1.Post)('/:id/messages'),
     __param(0, (0, common_1.Param)('id')),

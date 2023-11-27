@@ -7,4 +7,5 @@ export default class ChatroomRepositoryPostgres implements ChatroomRepository {
     constructor(_prismaService: PrismaService);
     createChatroom(_chatroom: Chatroom): Promise<Optional<Chatroom>>;
     getByID(id: string): Promise<Chatroom>;
+    getByUserID(_userId: string): Promise<Chatroom[]>;
 }

@@ -21,6 +21,13 @@ let AccessTokenStrategy = class AccessTokenStrategy extends (0, passport_1.Passp
             secretOrKey: _configService.get('JWT_ACCESS_SECRET'),
         });
     }
+    static extractJWTFromCookie(req) {
+        if (req.cookies && req.cookies.accessToken) {
+            console.log(req.cookies.accessToken);
+            return req.cookies.accessToken;
+        }
+        return null;
+    }
     validate(payload) {
         return payload;
     }

@@ -15,7 +15,8 @@ export default class ChatroomUsecase {
     private _messageFactory;
     constructor(_chatroomRepository: ChatroomRepository, _messageRepository: MessageRepository, _chatroomFactory: ChatroomFactory, _messageFactory: MessageFactory);
     handleCreate(_chatroomCommand: ChatroomCommand, _connectedUserID: string): Promise<Optional<Chatroom>>;
+    handleGetByUserId(_connectedUserID: string): Promise<Chatroom[]>;
     handleGetMessages(_messageFilter: MessageFiltersCommand): Promise<Optional<Message[]>>;
     handleCreateMessage(_messageCommand: MessageCommand): Promise<Optional<Message>>;
-    handleDeleteMessage(_messageID: string, _userID: string): Promise<boolean>;
+    handleDeleteMessage(_messageID: string, _userID: string): Promise<string>;
 }

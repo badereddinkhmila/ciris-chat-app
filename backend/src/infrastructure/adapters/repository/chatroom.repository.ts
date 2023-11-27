@@ -40,4 +40,23 @@ export default class ChatroomRepositoryPostgres implements ChatroomRepository {
     });
     return new Chatroom(chatroom.id, chatroom.users);
   }
+
+  async getByUserID(_userId: string): Promise<Chatroom[]> {
+    return this._prismaService.chatroom.findMany({
+      where: {
+        users: {
+          some: {
+            id: _userId,
+          },
+        },
+      },
+      include: {
+        users: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+  }
 }

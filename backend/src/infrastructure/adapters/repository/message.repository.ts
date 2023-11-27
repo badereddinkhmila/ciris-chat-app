@@ -52,8 +52,8 @@ export default class MessageRepositoryPostgres implements MessageRepository {
       }),
     );
   }
-  async softDeleteMessage(messageId: string): Promise<boolean> {
-    const message = await this._prismaService.message.update({
+  async softDeleteMessage(messageId: string): Promise<Message> {
+    return this._prismaService.message.update({
       where: {
         id: messageId,
       },
@@ -61,6 +61,5 @@ export default class MessageRepositoryPostgres implements MessageRepository {
         deletedAt: new Date(Date.now()),
       },
     });
-    return !!message?.id;
   }
 }

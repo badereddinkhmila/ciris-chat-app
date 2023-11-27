@@ -43,6 +43,14 @@ export default class ChatroomUsecase {
     }
   }
 
+  public handleGetByUserId(_connectedUserID: string): Promise<Chatroom[]> {
+    try {
+      return this._chatroomRepository.getByUserID(_connectedUserID);
+    } catch (error) {
+      throw new BadRequestException('Error fetching...');
+    }
+  }
+
   public handleGetMessages(
     _messageFilter: MessageFiltersCommand,
   ): Promise<Optional<Message[]>> {
@@ -59,22 +67,29 @@ export default class ChatroomUsecase {
     try {
       return this._messageRepository.createMessage(message);
     } catch (error) {
-      throw new Error('Error inserting...');
+      throw new BadRequestException({
+        message: 'Error inserting...',
+        statusCode: 500,
+      });
     }
   }
   public async handleDeleteMessage(
     _messageID: string,
     _userID: string,
-  ): Promise<boolean> {
+  ): Promise<string> {
     const message = await this._messageRepository.getMessagesByID(_messageID);
     if (message.isPresent() && message.get().createdBy != _userID)
       throw new UnauthorizedException(
         "You're not allowed to alter this resource",
       );
     try {
-      return this._messageRepository.softDeleteMessage(_messageID);
+      await this._messageRepository.softDeleteMessage(_messageID);
+      return _messageID;
     } catch (error) {
-      throw new BadRequestException('Error deleting...');
+      throw new BadRequestException({
+        message: 'Error deleting...',
+        statusCode: 500,
+      });
     }
   }
 }

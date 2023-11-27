@@ -10,19 +10,19 @@ export class AuthController {
   constructor(private _authUsecase: AuthUsecase) {}
 
   @Post('signup')
-  signup(@Body() _userCommand: UserCommand) {
-    return this._authUsecase.handleRegister(_userCommand);
+  async signup(@Body() _userCommand: UserCommand) {
+    return await this._authUsecase.handleRegister(_userCommand);
   }
 
   @Post('signin')
-  signin(@Body() _loginCommand: LoginCommand) {
-    return this._authUsecase.handleLogin(_loginCommand);
+  async signin(@Body() _loginCommand: LoginCommand) {
+    return await this._authUsecase.handleLogin(_loginCommand);
   }
 
   @UseGuards(RefreshTokenGuard)
   @Get('refresh')
-  refreshTokens(@Req() _req: Request) {
-    return this._authUsecase.handleRefreshTokens(
+  async refreshTokens(@Req() _req: Request) {
+    return await this._authUsecase.handleRefreshTokens(
       _req.user['sub'],
       _req.user['username'],
     );

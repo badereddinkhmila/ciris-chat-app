@@ -81,6 +81,7 @@ export class SocketGateway
       this.logger.log(`${payload.userId} is joining ${payload.chatroomId}`);
       client.join(payload.chatroomId);
       this.server.in(payload.userId).socketsJoin(payload.chatroomId);
+      this.logger.verbose('Joined Room successfully');
       return;
     }
     console.log('doing it wrong');

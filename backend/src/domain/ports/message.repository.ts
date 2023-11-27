@@ -9,5 +9,5 @@ export interface MessageRepository {
 
   createMessage(message: Message): Promise<Optional<Message>>;
 
-  softDeleteMessage(messageId: string): Promise<boolean>;
+  softDeleteMessage(messageId: string): Promise<Message>;
 }

@@ -22,14 +22,14 @@ let AuthController = class AuthController {
     constructor(_authUsecase) {
         this._authUsecase = _authUsecase;
     }
-    signup(_userCommand) {
-        return this._authUsecase.handleRegister(_userCommand);
+    async signup(_userCommand) {
+        return await this._authUsecase.handleRegister(_userCommand);
     }
-    signin(_loginCommand) {
-        return this._authUsecase.handleLogin(_loginCommand);
+    async signin(_loginCommand) {
+        return await this._authUsecase.handleLogin(_loginCommand);
     }
-    refreshTokens(_req) {
-        return this._authUsecase.handleRefreshTokens(_req.user['sub'], _req.user['username']);
+    async refreshTokens(_req) {
+        return await this._authUsecase.handleRefreshTokens(_req.user['sub'], _req.user['username']);
     }
 };
 exports.AuthController = AuthController;
@@ -38,14 +38,14 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_command_1.default]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signup", null);
 __decorate([
     (0, common_1.Post)('signin'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [login_command_1.default]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signin", null);
 __decorate([
     (0, common_1.UseGuards)(refreshToken_guard_1.RefreshTokenGuard),
@@ -53,7 +53,7 @@ __decorate([
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "refreshTokens", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),

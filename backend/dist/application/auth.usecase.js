@@ -48,7 +48,7 @@ let AuthUsecase = class AuthUsecase {
     async handleRefreshTokens(userId, email) {
         return await this.getTokens(userId, email);
     }
-    async handleGetAllUsers() {
+    async handleGetAllUsers(currentUser) {
         return await this._userRepository.getAllUsers();
     }
     async getTokens(userId, email) {
@@ -58,19 +58,20 @@ let AuthUsecase = class AuthUsecase {
                 username: email,
             }, {
                 secret: this._configService.get('JWT_ACCESS_SECRET'),
-                expiresIn: '3h',
+                expiresIn: '7d',
             }),
             this._jwtService.signAsync({
                 sub: userId,
                 username: email,
             }, {
                 secret: this._configService.get('JWT_REFRESH_SECRET'),
-                expiresIn: '7d',
+                expiresIn: '30d',
             }),
         ]);
         return {
             accessToken,
             refreshToken,
+            currentUserId: userId,
         };
     }
     async hashPassword(password) {
