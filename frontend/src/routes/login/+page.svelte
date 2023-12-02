@@ -5,16 +5,9 @@
 	import Icon from '@iconify/svelte';
 	import AuthModel from "../../store/models/Auth.model";
 	import { goto } from "$app/navigation";
-	import { authStore } from "../../store/index.store";
-import {enhance} from '$app/forms';
-
-	export let data;
-
-	$:clearUser = data?.clearUser;
-
-	$:{
-		if (clearUser) authStore.set(undefined)
-	}
+	import {enhance} from '$app/forms';
+	import { onMount } from 'svelte';
+	import { authStore } from '../../store/index.store';
 
 	const { form, errors, touched, isSubmitting, isValid, handleChange, validateField } = createForm({
 		initialValues: {
@@ -31,13 +24,16 @@ import {enhance} from '$app/forms';
 			}catch (error){
 				alert(error)
 			}
-			goto('/chatroom')
+			await goto('/chatroom')
 	}
 	});
 	const handleBlur = (event: FocusEvent)=>{
 		const field: "email"|"password" = event?.target?.name
 		if (field != null) validateField(field);
 	}
+	onMount(()=>{
+    	authStore.update((prevState:any)=>(prevState = {} as any))
+  })
 </script>
 
 <div class="card flex-col justify-center items-center p-10 m-20 space-y-10">

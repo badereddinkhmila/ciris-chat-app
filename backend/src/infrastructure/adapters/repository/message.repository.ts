@@ -20,6 +20,9 @@ export default class MessageRepositoryPostgres implements MessageRepository {
             lt: lastFetchedDate,
           },
         },
+        orderBy: {
+          createdAt: 'asc',
+        },
         take: 30,
       }),
     );

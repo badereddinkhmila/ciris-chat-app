@@ -2,6 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import AuthModel, { type IAuth } from '../../store/models/Auth.model';
 import { redirect } from '@sveltejs/kit';
 import { setCookies } from '../../store/utils/cookies';
+import { AxiosError } from 'axios';
 
 export const load = (({ cookies }) => {
 	const authToken = cookies.get('authToken');
@@ -17,6 +18,7 @@ export const actions = {
 		};
 		try {
 			const response: IAuth = await new AuthModel().login(data);
+			if(response instanceof AxiosError) throw new Error("Error logging in...")
 			setCookies(cookies, response);
 			throw redirect(302, '/chatroom');
 		} finally {

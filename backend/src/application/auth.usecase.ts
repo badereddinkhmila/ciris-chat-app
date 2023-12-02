@@ -52,7 +52,7 @@ export default class AuthUsecase {
     return await this.getTokens(userId, email);
   }
 
-  public async handleGetAllUsers(currentUser: string) {
+  public async handleGetAllUsers() {
     return await this._userRepository.getAllUsers();
   }
   /*****************************************************************************/

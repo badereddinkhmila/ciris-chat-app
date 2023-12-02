@@ -24,6 +24,9 @@ let MessageRepositoryPostgres = class MessageRepositoryPostgres {
                     lt: lastFetchedDate,
                 },
             },
+            orderBy: {
+                createdAt: 'asc',
+            },
             take: 30,
         }));
     }

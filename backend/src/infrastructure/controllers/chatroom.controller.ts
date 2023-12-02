@@ -31,7 +31,12 @@ export class ChatroomController {
   }
 
   @Get()
-  getChatrooms(@Req() _req: Request) {
+  getChatrooms(@Req() _req: Request, @Query('userId') _userId: string) {
+    if (_userId)
+      return this._chatroomUsecase.handleGetByUserIds([
+        _req.user['sub'],
+        _userId,
+      ]);
     return this._chatroomUsecase.handleGetByUserId(_req.user['sub']);
   }
 
@@ -60,7 +65,7 @@ export class ChatroomController {
   }
 
   @Delete('/:id/messages/:messageID')
-  Delete(@Param('messageID') _messageID: string, @Req() _req: Request) {
+  deleteMessage(@Param('messageID') _messageID: string, @Req() _req: Request) {
     return this._chatroomUsecase.handleDeleteMessage(
       _messageID,
       _req.user['sub'],

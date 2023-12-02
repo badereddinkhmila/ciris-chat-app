@@ -51,6 +51,21 @@ export default class ChatroomUsecase {
     }
   }
 
+  public async handleGetByUserIds(_userIds: string[]): Promise<Chatroom> {
+    try {
+      const chatrooms = await this._chatroomRepository.getByUserID(_userIds[0]);
+      return chatrooms.find((room: Chatroom) => {
+        let satisfiesRequirements = true;
+        room.users.forEach((user) => {
+          if (!_userIds.includes(user.id)) satisfiesRequirements = false;
+        });
+        return satisfiesRequirements;
+      });
+    } catch (error) {
+      throw new BadRequestException('Error fetching...');
+    }
+  }
+
   public handleGetMessages(
     _messageFilter: MessageFiltersCommand,
   ): Promise<Optional<Message[]>> {
@@ -76,15 +91,14 @@ export default class ChatroomUsecase {
   public async handleDeleteMessage(
     _messageID: string,
     _userID: string,
-  ): Promise<string> {
+  ): Promise<Message> {
     const message = await this._messageRepository.getMessagesByID(_messageID);
     if (message.isPresent() && message.get().createdBy != _userID)
       throw new UnauthorizedException(
         "You're not allowed to alter this resource",
       );
     try {
-      await this._messageRepository.softDeleteMessage(_messageID);
-      return _messageID;
+      return await this._messageRepository.softDeleteMessage(_messageID);
     } catch (error) {
       throw new BadRequestException({
         message: 'Error deleting...',

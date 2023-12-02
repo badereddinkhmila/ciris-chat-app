@@ -1,11 +1,16 @@
 import type { PageLoad } from '../../../../.svelte-kit/types/src/routes/chatroom/[chatroomId]/$types';
 import { io } from 'socket.io-client';
+import { AxiosRequest } from '../../../store/utils/request';
+import { AxiosError } from 'axios';
 
 export const ssr = false;
-export const load: PageLoad = async ({ params, data, parent }) => {
+export const load: PageLoad = async ({ params, parent }) => {
 	const parentData = await parent();
-	console.log(parentData);
-	let isConnected: boolean;
+	let isConnected: boolean= false;
+	const url:string = `chatrooms/${params.chatroomId}/messages?lastDate=${new Date().toISOString()}`
+	const response = AxiosRequest(url,'GET',undefined, parentData.accessToken)
+	if(response instanceof AxiosError) throw new Error('Error getting messages from backend');
+
 	const socket = io('http://localhost:8000/chat', {
 		extraHeaders: {
 			Authorization: 'Bearer ' + parentData.accessToken
@@ -26,6 +31,7 @@ export const load: PageLoad = async ({ params, data, parent }) => {
 	return {
 		socket: socket,
 		chatroomId: params.chatroomId,
-		messages: []
+		isConnected: isConnected,
+		messages: (await response).data
 	};
 };

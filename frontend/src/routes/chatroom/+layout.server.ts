@@ -28,7 +28,8 @@ export const load: LayoutServerData = async ({ cookies }) => {
 			users: users.data,
 			chatrooms: chatrooms.data,
 			currentUser: currentUser,
-			accessToken: cookies.get('accessToken')
+			accessToken: cookies.get('accessToken'),
+			refreshToken: cookies.get('refreshToken')
 		};
 	} catch (error) {
 		console.log(error);

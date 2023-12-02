@@ -1,13 +1,18 @@
 <script lang="ts">
-  import UsersList from '$lib/components/usersList.svelte'
   import Icon from '@iconify/svelte'
-  import { setContext } from "svelte";
+  import UsersList from '$lib/components/usersList.svelte'
+  import { onMount, setContext } from "svelte";
+	import type { IUser } from '../../store/models/Users.model.js';
+	import { authStore } from '../../store/index.store.js';
 
   export let data;
-  let users = data?.users?.filter( user => user.id != data?.currentUser.id)
-  $:chatrooms = data?.chatrooms;
+  let users = data?.users?.filter((user:IUser) => user.id != data?.currentUser.id)			
   let authContext = { currentUser : data?.currentUser, accessToken: data?.accessToken, users: users, chatrooms:data?.chatrooms }
   setContext('authContext', authContext)
+
+  onMount(()=>{
+    authStore.update((prevState:any)=>(prevState = {currentUser : data?.currentUser, accessToken: data?.accessToken, refreshToken: data?.refreshToken}))
+  })
 </script>
 <div class="card h-5/6 flex-col justify-center items-center p-10 m-20 space-y-10 bg-gray-900">
 <div class="h-full w-full flex antialiased text-gray-200 bg-gray-900">
@@ -15,7 +20,7 @@
     <main class="flex-grow flex flex-row min-h-0">
       <section class="flex flex-col flex-none overflow-auto w-24 hover:w-64 group lg:max-w-sm md:w-2/5 transition-all duration-300 ease-in-out">
         <div class="search-box p-4 flex-none">
-          <form onsubmit="">
+          <form on:submit={()=>true}>
             <div class="relative">
               <label>
                 <input class="rounded-full py-2 pr-6 pl-10 w-full border border-gray-800 focus:border-gray-700 bg-gray-800 focus:bg-gray-900 focus:outline-none text-gray-200 focus:shadow-md transition duration-300 ease-in"
@@ -104,7 +109,7 @@
             />
           </div></div><p>Adam</p></div>
         </div>
-        <UsersList users={users} chatrooms={chatrooms} />
+        <UsersList users={users} />
       </section>
       <slot/>
     </main>

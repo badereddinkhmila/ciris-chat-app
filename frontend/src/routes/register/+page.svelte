@@ -4,16 +4,7 @@
 	import * as yup from 'yup';
 	import Icon from '@iconify/svelte';
 	import {enhance} from '$app/forms';
-	import { authStore } from "../../store/index.store";
-
-	export let data;
-
-	$:clearUser = data?.clearUser;
-
-	$:{
-		if (clearUser) authStore.set(undefined)
-	}
-
+	
 	const { form, errors, touched, isSubmitting, isValid, handleChange, handleSubmit, validateField } = createForm({
 		initialValues: {
 			firstname:"",
@@ -44,10 +35,10 @@
 		<h1 class="h1">Register</h1>
 	</div>
 	<div class="container flex space-x-10 items-center">
-		<div class="hidden md:block w-1/3">
+		<div class="hidden lg:block w-2/5">
 			<img src={logo} alt="login logo"/>
 		</div>
-		<div class="flex w-full md:w-2/3">
+		<div class="flex w-full lg:w-3/5">
 			<form use:enhance class="container flex-col items-center space-y-10" method="post">
 				<div class="flex space-x-10">
 					<label class="label w-1/2">

@@ -24,7 +24,12 @@ let ChatroomController = class ChatroomController {
     createChatroom(_req, _chatroomCommand) {
         return this._chatroomUsecase.handleCreate(_chatroomCommand, _req.user['sub']);
     }
-    getChatrooms(_req) {
+    getChatrooms(_req, _userId) {
+        if (_userId)
+            return this._chatroomUsecase.handleGetByUserIds([
+                _req.user['sub'],
+                _userId,
+            ]);
         return this._chatroomUsecase.handleGetByUserId(_req.user['sub']);
     }
     createMessage(_chatroomID, _req, _message) {
@@ -40,7 +45,7 @@ let ChatroomController = class ChatroomController {
             lastDateFetched: lastDate,
         });
     }
-    Delete(_messageID, _req) {
+    deleteMessage(_messageID, _req) {
         return this._chatroomUsecase.handleDeleteMessage(_messageID, _req.user['sub']);
     }
 };
@@ -56,8 +61,9 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], ChatroomController.prototype, "getChatrooms", null);
 __decorate([
@@ -84,7 +90,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
-], ChatroomController.prototype, "Delete", null);
+], ChatroomController.prototype, "deleteMessage", null);
 exports.ChatroomController = ChatroomController = __decorate([
     (0, common_1.UseGuards)(accessToken_guard_1.AccessTokenGuard),
     (0, common_1.Controller)('chatrooms'),

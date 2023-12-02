@@ -48,7 +48,7 @@ let AuthUsecase = class AuthUsecase {
     async handleRefreshTokens(userId, email) {
         return await this.getTokens(userId, email);
     }
-    async handleGetAllUsers(currentUser) {
+    async handleGetAllUsers() {
         return await this._userRepository.getAllUsers();
     }
     async getTokens(userId, email) {
