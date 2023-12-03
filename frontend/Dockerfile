@@ -10,6 +10,12 @@ COPY . .
 # Creating a build:
 FROM node:18 AS create-build
 
+#Build ARGS
+ARG BACKEND_URL
+
+#Env Vars
+ENV PUBLIC_BACKEND_URL=$PUBLIC_BACKEND_URL
+
 WORKDIR /user/src/app
 RUN npm install -g npm@latest
 COPY --chown=node:node --from=install-dependencies /user/src/app ./

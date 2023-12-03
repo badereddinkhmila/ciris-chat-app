@@ -1,3 +1,4 @@
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
 import type { PageLoad } from '../../../../.svelte-kit/types/src/routes/chatroom/[chatroomId]/$types';
 import { io } from 'socket.io-client';
 import { AxiosRequest } from '../../../store/utils/request';
@@ -11,7 +12,7 @@ export const load: PageLoad = async ({ params, parent }) => {
 	const response = AxiosRequest(url,'GET',undefined, parentData.accessToken)
 	if(response instanceof AxiosError) throw new Error('Error getting messages from backend');
 
-	const socket = io('http://localhost:8000/chat', {
+	const socket = io(PUBLIC_BACKEND_URL+'/chat', {
 		extraHeaders: {
 			Authorization: 'Bearer ' + parentData.accessToken
 		}
