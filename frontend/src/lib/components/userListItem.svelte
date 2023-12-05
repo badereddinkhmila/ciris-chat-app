@@ -17,11 +17,12 @@
     const room = authContext?.chatrooms.findLast((room:IChatroom) => room.users.find(user => user.id === userId))
     if (room === undefined && authContext.currentUser && authContext.accessToken) {
       // check if room was just created in the server
-      const ExistChatroom:AxiosResponse<IChatroom, Error> =
-        await AxiosRequest('chatrooms?userId='+userId, 'GET',undefined ,authContext?.accessToken);
-      if (ExistChatroom?.data) {
-        authContext?.chatrooms.push(ExistChatroom.data)  
-        await goto('/chatroom/'+ExistChatroom.data.id)
+      const _existChatroom:AxiosResponse<IChatroom, Error> =
+        await AxiosRequest('chatrooms/isCreated', 'POST',{ userID : userId } ,authContext?.accessToken)
+      console.log('chatroom data: ', _existChatroom)
+      if (_existChatroom?.data) {
+        authContext?.chatrooms.push(_existChatroom.data)  
+        await goto('/chatroom/'+_existChatroom.data.id)
         return
       }
       // Create the room

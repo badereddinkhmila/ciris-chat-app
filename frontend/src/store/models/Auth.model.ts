@@ -35,9 +35,11 @@ class Auth {
 
 	async register(_data: { firstname: string; lastname: string; email: string; password: string }) {
 		try {
-			const { data } = await AxiosRequest('auth/signup', 'POST', _data);
-			return data;
+			const response = await AxiosRequest('auth/signup', 'POST', _data);
+			console.log(response)
+			return response;
 		} catch (error) {
+			console.log(error)
 			return error;
 		}
 	}

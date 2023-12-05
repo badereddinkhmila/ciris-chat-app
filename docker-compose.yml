@@ -13,11 +13,14 @@ services:
     environment:
       - DATABASE_URL=postgresql://ciris-dev-user:ciris-dev-password@postgres/ciris-dev-db?schema=public
       - CLIENT_URL=http://front:3000
+      - BROWSER_CLIENT_URL=http://localhost:3000
       - APP_PORT=8000
       - JWT_ACCESS_SECRET=Hr/73P/1YZC9qfwRD1GDzJ+BNYNfVlybBC5aVs19czyqi47zQvMa42n3w/ogS0EpEOnx2XIXdaKmn6gjpWOYEffI3MliI2GaBd8bk7waF0LPbbdeXdRji+zZAvGLgReEOKFL+zMUyvAyThbOw5DW63aLfdPZSJFHjuuET/LO3Jnl9nAtKVVEFUjNlnwSExp7xUOu8NR0LgV1ySTjx9y/jxxTpGOgnYGJY0+wpzb5Pv7U1Nhq+8hWQaWNP/ACXvVs/ZcksHb9PZpykFMSKYED29fQZtOSEtUHPrmBzyZ1af0Uv9rveoiXpcqZeQwrgMVS6ziZsLynww81txNHETdQ6g==
       - JWT_REFRESH_SECRET=kWymrrZVrxqBp/x5+woasoUzqeIyyFQph5MsLpZOMyd9WUZ2W4K/EFZ0f/NGu+V8ryAEw9Wdof0tvnjDle/eFY7Psq12qK+xlBkglbkC+r2wlwexGTHh3b2gzEXOqbEaKHN3YDrbBFKlzKkJ+OtSWpv0/mdSx5ysfcoUnWHSq+Nxh0mAB/QP/boR7z4EAPKTk8ly0aTaTZji/eH00SX+64DzhAaS8uC6pBzWEabLm8IHcQ9OatqTWtRUYDSdb9A6RhNnopHUmnOdpd8yqQu7QusNxfWMLP0cQ6YsF8Rt/p3m5lyYH3jm9+78iu1NOy7r3NV7HGX4qtX5Y1IlgW/ZGQ==
     depends_on:
       - postgres
+    ports:
+      - 8000:8000
     networks:
       - network-backend
       - network-frontend
@@ -28,8 +31,14 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       target: run
+      args:
+        - BACKEND_URL=http://back:8000
+        - PUBLIC_BROWSER_BACKEND_URL=http://localhost:8000
+        - ORIGIN=http://localhost:3000
     environment:
-      - BACKEND_URL=http://back:8000
+      - PUBLIC_BACKEND_URL=http://back:8000
+      - PUBLIC_BROWSER_BACKEND_URL=http://localhost:8000
+      - ORIGIN=http://localhost:3000
     depends_on:
       - back
     ports:

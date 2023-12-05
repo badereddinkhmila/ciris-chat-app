@@ -1,8 +1,9 @@
 import type { Actions, PageServerLoad } from './$types';
-import AuthModel, { type IAuth } from '../../store/models/Auth.model';
+import AuthModel from '../../store/models/Auth.model';
 import { redirect } from '@sveltejs/kit';
 import { setCookies } from '../../store/utils/cookies';
 import { AxiosError } from 'axios';
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
 
 export const load = (({ cookies }) => {
 	const authStore = cookies.get('authStore');
@@ -11,6 +12,7 @@ export const load = (({ cookies }) => {
 }) satisfies PageServerLoad;
 export const actions = {
 	default: async ({ request, cookies }) => {
+		console.log(PUBLIC_BACKEND_URL)
 		const formData = await request.formData();
 		const data = {
 			firstname: formData.get('firstname')?.toString() ?? '',
@@ -19,10 +21,11 @@ export const actions = {
 			password: formData.get('password')?.toString() ?? ''
 		};
 		try {
-			const response: IAuth = await new AuthModel().register(data);
-			if(response instanceof AxiosError) throw new Error("Error logging in...")
-			setCookies(cookies, response);
-			throw redirect(302, '/chatroom');
+			const response = await new AuthModel().register(data);
+			console.log(response)
+			if(response instanceof AxiosError) throw new Error("Error registering in...")
+			setCookies(cookies, response?.data);
+			throw redirect(301, '/chatroom');
 		} finally {
 			/* empty */
 		}

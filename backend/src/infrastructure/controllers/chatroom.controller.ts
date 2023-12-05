@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   Query,
@@ -31,13 +32,16 @@ export class ChatroomController {
   }
 
   @Get()
-  getChatrooms(@Req() _req: Request, @Query('userId') _userId: string) {
-    if (_userId)
-      return this._chatroomUsecase.handleGetByUserIds([
-        _req.user['sub'],
-        _userId,
-      ]);
+  getChatrooms(@Req() _req: Request) {
     return this._chatroomUsecase.handleGetByUserId(_req.user['sub']);
+  }
+
+  @Post('/isCreated')
+  checkChatroomExist(@Req() _req: Request, @Body('userID') _userID: string) {
+    return this._chatroomUsecase.handleGetByUserIds([
+      _req.user['sub'],
+      _userID,
+    ]);
   }
 
   @Post('/:id/messages')

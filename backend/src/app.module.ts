@@ -27,8 +27,10 @@ import { JwtModule } from '@nestjs/jwt';
 export class AppModule {
   static port: number;
   static clientUrl: string;
+  static browserClientUrl: string;
   constructor(_config: ConfigService) {
     AppModule.port = _config.get<number>('APP_PORT');
     AppModule.clientUrl = _config.get<string>('CLIENT_URL');
+    AppModule.browserClientUrl = _config.get<string>('BROWSER_CLIENT_URL');
   }
 }

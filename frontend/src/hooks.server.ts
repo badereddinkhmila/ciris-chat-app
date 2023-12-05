@@ -2,7 +2,6 @@ import type { Handle } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	console.log('in server hooks')
 	const isAuthenticated = !!event.cookies.get('accessToken');
 	const authRoute = event.url.pathname.startsWith('/login') || event.url.pathname.startsWith('/register')
 	if (event.url.pathname.startsWith('/signout')) {

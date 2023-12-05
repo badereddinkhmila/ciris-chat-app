@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { PUBLIC_BACKEND_URL } from '$env/static/public';
+import { PUBLIC_BROWSER_BACKEND_URL } from '$env/static/public';
+import { browser } from '$app/environment';
 
-const apiPrefix = PUBLIC_BACKEND_URL + '/api/v1/';
+const apiPrefix = browser ? PUBLIC_BROWSER_BACKEND_URL + '/api/v1/' : PUBLIC_BACKEND_URL + '/api/v1/';
 const axiosApiInstance = axios.create();
 
 // Response interceptor for API calls
