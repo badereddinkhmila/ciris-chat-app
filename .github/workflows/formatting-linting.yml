@@ -10,7 +10,6 @@ env:
   FRONTEND_IMAGE_TAG: svelte-ui
 
 jobs:
-
   format-lint-back:
     name: Run formatting & linting Backend
     runs-on: ubuntu-latest
